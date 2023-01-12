@@ -28,7 +28,7 @@ class LogUtils:
         logger.remove()
         logger.add(sys.stderr, level="INFO")
 
-        logFilepath = config.Logger_root_path + "logs"
+        logFilepath = config.Logger_root_path
         # 判断目录是否存在,不存在则创建新的目录
         if not os.path.isdir(logFilepath):
             os.makedirs(logFilepath)
