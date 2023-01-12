@@ -24,9 +24,9 @@ class User(Base):
     verified = Column(Integer, comment='认证状态 boolean')
     verified_type = Column(Integer, comment='认证类型')
     verified_type_ext = Column(Integer, comment='【未知】认证相关字段')
-    verified_reason = Column(String(255), comment='认证说明')
+    verified_reason = Column(LONGTEXT, comment='认证说明')
     close_blue_v = Column(Integer, comment='蓝V boolean')
-    description = Column(String(255), comment='用户描述')
+    description = Column(LONGTEXT, comment='用户描述')
     gender = Column(VARCHAR(10), comment='用户性别')
     follow_count = Column(Integer, comment='关注数量')
     followers_count = Column(Integer, comment='粉丝数量')
@@ -45,13 +45,13 @@ class Article(Base):
     source = Column(VARCHAR(50), comment='文章来源')
     pic_num = Column(Integer, comment='图片数量')
     region_name = Column(String(50), comment='区域名称')
-    status_title = Column(String(100), comment='标题')
+    status_title = Column(LONGTEXT, comment='标题')
     type = Column(String(50), comment='页面类型')
     page_url = Column(TEXT, comment='页面URL')
-    page_title = Column(String(255), comment='页面标题')
-    title = Column(String(255))
-    content1 = Column(String(255))
-    content2 = Column(String(255))
+    page_title = Column(LONGTEXT, comment='页面标题')
+    title = Column(LONGTEXT)
+    content1 = Column(LONGTEXT)
+    content2 = Column(LONGTEXT)
     video_orientation = Column(String(255), comment='视频方向')
     play_count = Column(Integer, comment='播放次数')
     reposts_count = Column(Integer, comment='转发数')
@@ -63,6 +63,7 @@ class Article(Base):
                   comment='用户')
     datetime = Column(DateTime, comment='写入时间')
     spider_keyword = Column(String(255), comment='爬虫关键字')
+    server_ip = Column(String(255), comment='服务器IP')
     user1 = relationship('User')
 
 
@@ -126,6 +127,7 @@ def DictConvertORM(data, type):
             orm.user = data['user']
             orm.datetime = datetime.datetime.now()
             orm.spider_keyword = data['spider_keyword']
+            orm.server_ip = data['server_ip']
         return orm
     except Exception as e:
         logutils.error(e)
