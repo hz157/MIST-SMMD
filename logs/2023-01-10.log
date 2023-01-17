@@ -1,0 +1,8 @@
+2023-01-10 23:36:56:411 | INFO | Process:MainProcess:46644 | Thread:MainThread:24128 | D:\Users\horizon\Documents\CodeStorage\MIDEP\dev\source\Utils\logger.py:45 | 123
+2023-01-10 23:37:16:387 | INFO | Process:MainProcess:44428 | Thread:MainThread:47604 | D:\Users\horizon\Documents\CodeStorage\MIDEP\dev\source\Utils\logger.py:45 | 123
+2023-01-10 23:37:20:845 | DEBUG | Process:MainProcess:20216 | Thread:MainThread:16140 | D:\Users\horizon\Documents\CodeStorage\MIDEP\dev\source\Utils\logger.py:45 | 123
+2023-01-10 23:56:37:090 | INFO | Process:MainProcess:8684 | Thread:MainThread:51708 | D:\Users\horizon\Documents\CodeStorage\MIDEP\dev\source\app.py:18 | Python Start
+2023-01-10 23:57:10:791 | INFO | Process:MainProcess:19044 | Thread:MainThread:53996 | D:\Users\horizon\Documents\CodeStorage\MIDEP\dev\source\app.py:18 | Python Start
+2023-01-10 23:57:10:796 | INFO | Process:MainProcess:19044 | Thread:MainThread:53996 | D:\Users\horizon\Documents\CodeStorage\MIDEP\dev\source\Database\Mysql.py:17 | Mysql Init
+2023-01-10 23:57:56:943 | INFO | Process:MainProcess:7592 | Thread:MainThread:17640 | D:\Users\horizon\Documents\CodeStorage\MIDEP\dev\source\app.py:16 | Python Start
+2023-01-10 23:57:56:944 | INFO | Process:MainProcess:7592 | Thread:MainThread:17640 | D:\Users\horizon\Documents\CodeStorage\MIDEP\dev\source\Database\Mysql.py:18 | Mysql Init

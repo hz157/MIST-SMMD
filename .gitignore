@@ -3,4 +3,6 @@ appengine-generated/
 # Macos system file
 .DS_Store
 /.idea
-*/.DS_Store 
+*/.DS_Store
+/static/image/*.jpg
+/static/video/*.mp4
