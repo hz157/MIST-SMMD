@@ -13,27 +13,31 @@ from Config import dev, prop
 # 开发环境
 env = prop
 
+server_ip = 'Virtual-Linux-Fujian'
+
 """Mysql Config"""
 Mysql_dialect = "mysql"
 Mysql_driver = "pymysql"
-Mysql_host = "localhost"
-Mysql_port = 3306
-Mysql_username = "username"
-Mysql_password = "password"
-Mysql_database = "database"
+Mysql_host = "127.0.0.1"
+Mysql_port = 53306
+Mysql_username = "midep"
+Mysql_password = "MXJKQzHCfy7qeUtm"
+Mysql_database = "MIDEP"
 Mysql_pool_size = 8  # 数据库连接池大小 默认5 设置为0表示无限制
 Mysql_pool_recycle = 60 * 30  # 数据库自动断开时间
 Mysql_echo = env.Mysql_echo  # ORM转话SQL语句打印
 
 """Files Path Config"""
 # log root path
-Logger_root_path = ""
+Logger_root_path = "Z:/Project/MIDEP/logs"
 # ini path
 temp_config_path = "Config/temp_config.ini"
 # video root path
-video_root_path = "static/video"
+# video_root_path = "static/video"
+video_root_path = "Z:/Project/MIDEP/video"
 # image root path
-images_root_path = "static/image"
+# images_root_path = "static/image"
+images_root_path = "Z:/Project/MIDEP/image"
 
 """Redis Config"""
 Redis_host = 'localhost'
@@ -49,7 +53,7 @@ Sina_PC_Header = {
     "accept-encoding": "gzip, deflate, br",
     "accept-language": "zh-CN,zh;q=0.9",
     "cookie": ''
-    }
+}
 
 Sina_Mobile_URL = "https://m.weibo.cn/status/"
 Sina_Mobile_Header = {
