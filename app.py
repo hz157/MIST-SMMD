@@ -33,6 +33,7 @@ def main(keyword):
             ArticleInfo = getArticleInfo(response)
             try:
                 ArticleInfo['spider_keyword'] = keyword
+                ArticleInfo['server_ip'] = config.server_ip
             except Exception as e:
                 logutils.error(e)
             Images = getArticleImage(response)
@@ -78,5 +79,7 @@ def main(keyword):
 
 if __name__ == '__main__':
     logutils.info("Python Start")
-    main(input("Please Input keyword"))
+    keyword_list = ['集美天气', '思明天气']
+    for i in keyword_list:
+        main(i)
     logutils.error("Python End")
