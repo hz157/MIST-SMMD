@@ -47,6 +47,7 @@ Redis_password = ''
 """Sina Config"""
 Sina_OrgImage_Url = "https://wx3.sinaimg.cn/large/"
 Sina_PC_URL = "https://s.weibo.com/weibo?q="
+# Sina_PC_URL = "https://s.weibo.com/weibo?q=%E5%8E%A6%E9%97%A8%E4%B8%8B%E9%9B%A8&typeall=1&suball=1&timescope=custom%3A2023-01-05-0%3A2023-01-29-16&Refer=g&page=1"
 Sina_PC_Header = {
     "User-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36",
     "accept": "not-source/json, text/plain, */*",
