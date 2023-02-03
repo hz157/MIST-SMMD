@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : midep MXJKQzHCfy7qeUtm
+ Source Server         : localhost ML2iGS3dyqTnisMc
  Source Server Type    : MySQL
  Source Server Version : 80031 (8.0.31)
  Source Host           : localhost:53306
@@ -11,7 +11,7 @@
  Target Server Version : 80031 (8.0.31)
  File Encoding         : 65001
 
- Date: 17/01/2023 22:54:48
+ Date: 03/02/2023 16:21:34
 */
 
 SET NAMES utf8mb4;
@@ -69,7 +69,7 @@ CREATE TABLE `media`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `article`(`article` ASC) USING BTREE,
   CONSTRAINT `media_ibfk_1` FOREIGN KEY (`article`) REFERENCES `article` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 6442 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 21189 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for task
@@ -77,12 +77,17 @@ CREATE TABLE `media`  (
 DROP TABLE IF EXISTS `task`;
 CREATE TABLE `task`  (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `keyword` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `current` int NULL DEFAULT NULL,
-  `page_count` int NULL DEFAULT NULL,
-  `priority` int NULL DEFAULT NULL,
+  `keyword` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '关键字',
+  `current` int NULL DEFAULT 1 COMMENT '当前页',
+  `page_count` int NULL DEFAULT NULL COMMENT '总页数',
+  `priority` int NULL DEFAULT NULL COMMENT '优先级',
+  `current_time` datetime NULL DEFAULT NULL COMMENT '当前查询的时间',
+  `deadline` datetime NULL DEFAULT NULL COMMENT '查询起始时间',
+  `work_start` datetime NULL DEFAULT NULL COMMENT '开始时间',
+  `work_end` datetime NULL DEFAULT NULL COMMENT '结束时间',
+  `status` int NULL DEFAULT 0 COMMENT '任务状态',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for user
