@@ -1,0 +1,2 @@
+2023-02-03 23:22:47:061 | ERROR | Process:MainProcess:34664 | Thread:MainThread:41488 | D:\Users\horizon\Documents\CodeStorage\MIDEP\client_dev\utils\config.py:53 | 'config'
+2023-02-03 23:23:01:741 | INFO | Process:MainProcess:34664 | Thread:MainThread:41488 | D:\Users\horizon\Documents\CodeStorage\MIDEP\client_dev\utils\config.py:34 | write config, section: config, option: server_addr
