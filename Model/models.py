@@ -1,7 +1,7 @@
 # coding: utf-8
 import datetime
 
-from sqlalchemy import BigInteger, Column, DateTime, Enum, ForeignKey, Integer, String, text
+from sqlalchemy import BigInteger, Column, DateTime, Enum, ForeignKey, Integer, String, text, Float
 from sqlalchemy.dialects.mysql import CHAR, VARCHAR, LONGTEXT, TEXT
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
@@ -63,7 +63,9 @@ class Article(Base):
                   comment='用户')
     datetime = Column(DateTime, comment='写入时间')
     spider_keyword = Column(String(255), comment='爬虫关键字')
-    server_ip = Column(String(255), comment='服务器IP')
+    server_name = Column(String(255), comment='服务器IP')
+    relevant = Column(Float(), comment='相似度')
+    clean_text = Column(LONGTEXT, comment='清洗数据')
     user1 = relationship('User')
 
 
@@ -73,7 +75,7 @@ class Media(Base):
     id = Column(BigInteger, primary_key=True)
     article = Column(ForeignKey('article.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False, index=True,
                      comment='微博文章')
-    path = Column(TEXT, nullable=False, comment='文件路径')
+    path = Column(TEXT, comment='文件路径')
     type = Column(Enum('image', 'video'), nullable=False, server_default=text("'image'"), comment='文件类型')
     size = Column(Integer, comment='文件大小')
     original = Column(TEXT, comment='原地址')
@@ -96,9 +98,9 @@ class Task(Base):
     status = Column(Integer, comment='状态')
 
 
-def DictConvertORM(data, type: str):
+def DictConvertORM(data, table: str, obj: list = None):
     try:
-        if type == "user":
+        if table == "user":
             orm = User()
             orm.id = data['id']
             orm.screen_name = data['screen_name']
@@ -114,7 +116,7 @@ def DictConvertORM(data, type: str):
             orm.gender = data['gender']
             orm.follow_count = data['follow_count']
             orm.followers_count = data['followers_count']
-        elif type == "article":
+        elif table == "article":
             orm = Article()
             orm.id = data['id']
             orm.created_at = data['created_at']
@@ -142,7 +144,24 @@ def DictConvertORM(data, type: str):
             orm.user = data['user']
             orm.datetime = datetime.datetime.now()
             orm.spider_keyword = data['spider_keyword']
-            orm.server_ip = data['server_ip']
+            orm.relevant = data['relevant']
+            orm.server_name = data['server_name']
+            orm.clean_text = data['clean_text']
+        elif table == 'user' and type == 'update':
+            orm = obj[0]
+            orm.screen_name = data['screen_name']
+            orm.profile_image_url = data['profile_image_url']
+            orm.profile_url = data['profile_url']
+            orm.statuses_count = data['statuses_count']
+            orm.verified = data['verified']
+            orm.verified_type = data['verified_type']
+            orm.verified_type_ext = data['verified_type_ext']
+            orm.verified_reason = data['verified_reason']
+            orm.close_blue_v = data['close_blue_v']
+            orm.description = data['description']
+            orm.gender = data['gender']
+            orm.follow_count = data['follow_count']
+            orm.followers_count = data['followers_count']
         return orm
     except Exception as e:
         logutils.error(e)
