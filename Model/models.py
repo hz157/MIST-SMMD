@@ -81,7 +81,22 @@ class Media(Base):
     article1 = relationship('Article')
 
 
-def DictConvertORM(data, type):
+class Task(Base):
+    __tablename__ = 'task'
+
+    id = Column(BigInteger, primary_key=True)
+    keyword = Column(String(255), comment='关键字')
+    current = Column(Integer, comment='当前页', default=1)
+    page_count = Column(Integer, comment='总页数')
+    priority = Column(Integer, comment='优先级')
+    deadline = Column(DateTime, comment='查询起始时间')
+    current_time = Column(DateTime, comment='当前查询的时间')
+    work_start = Column(DateTime, comment='开始时间')
+    work_end = Column(DateTime, comment='结束时间')
+    status = Column(Integer, comment='状态')
+
+
+def DictConvertORM(data, type: str):
     try:
         if type == "user":
             orm = User()
@@ -131,19 +146,3 @@ def DictConvertORM(data, type):
         return orm
     except Exception as e:
         logutils.error(e)
-
-
-# return User(data['id'],
-#                         data['screen_name'],
-#                         data['profile_image_url'],
-#                         data['profile_url'],
-#                         data['statuses_count'],
-#                         data['verified'],
-#                         data['verified_type'],
-#                         data['verified_type_ext'],
-#                         data['verified_reason'],
-#                         data['close_blue_v'],
-#                         data['description'],
-#                         data['gender'],
-#                         data['follow_count'],
-#                         data['followers_count'])

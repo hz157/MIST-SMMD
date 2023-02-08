@@ -6,29 +6,33 @@
 # @Author：Ryan Zhang    (https://github.com/hz157)
 # @DateTime: 10/1/2023 下午11:59
 import json
-
+import datetime
 import requests
 
-from bs4 import BeautifulSoup
 
+from bs4 import BeautifulSoup
 
 from Config import config
 from Utils import temp_config
 from Utils.convert import CNConvertInt, UTCConvertFormat
 from Utils.logutils import LogUtils
 
+
 logutils = LogUtils()
 
 
-def getArticlePagesByKeyword(keyword: None):
+def getArticlePagesByKeyword(stopTime: datetime, keyword: None):
     """
     Get Sina Weibo Article Page Count
+    :param stopTime: Search Stop Time
     :param keyword: Article keyword
     :return: page count-int
     """
     logutils.info(f"Start requesting article pages by keyword (keyword: {keyword})")
+    start = (stopTime + datetime.timedelta(days=-1)).strftime("%Y-%m-%d-%H")  # previous day
+    end = stopTime.strftime("%Y-%m-%d %H")
     try:
-        url = f"{config.Sina_PC_URL}{keyword}&nodup=1"
+        url = f"{config.Sina_PC_URL}{keyword}&typeall=1&suball=1&timescope=custom%3A{start}%3A{end}&Refer=g&nodup=1"
         head = config.Sina_PC_Header
         head['cookie'] = temp_config.readConfig("cookie", "pc")
         data = requests.get(url=url, headers=head).text
@@ -37,6 +41,8 @@ def getArticlePagesByKeyword(keyword: None):
         # find div
         page_div = str(soup.findAll("ul", attrs={"action-type": "feed_list_page_morelist"})).split('\n')
         pages = len(page_div) - 2
+        if pages < 1:
+            pages = 1
         logutils.info(f"keyword: {keyword}, page count: {pages}")
         return pages
     except Exception as e:
@@ -44,16 +50,19 @@ def getArticlePagesByKeyword(keyword: None):
     return None
 
 
-def getArticleMidsByKeyword(keyword: None, page: int):
+def getArticleMidsByKeyword(stopTime: datetime, keyword: None, page: int):
     """
     Get Sina Weibo Article Mids
+    :param stopTime: Search Stop Time
     :param keyword: Article keyword
     :param page: Article Keyword Page
     :return: mid-List
     """
     logutils.info(f"Start requesting article id by keyword (keyword: {keyword}, page: {page})")
+    start = (stopTime + datetime.timedelta(days=-1)).strftime("%Y-%m-%d %H")  # previous day
+    end = stopTime.strftime("%Y-%m-%d %H")
     try:
-        url = f"{config.Sina_PC_URL}{keyword}&page={str(page)}"
+        url = f"{config.Sina_PC_URL}{keyword}&typeall=1&suball=1&timescope=custom%3A{start}%3A{end}&Refer=g&nodup=1&page={str(page)}"
         header = config.Sina_PC_Header
         header['cookie'] = temp_config.readConfig("cookie", "pc")
         data = requests.get(url=url, headers=header).text
@@ -137,7 +146,7 @@ def getArticleInfo(data: dict):
                   'pic_num': analysisResponseDict(data, 'pic_num', type='cvi'),
                   'region_name': analysisResponseDict(data, 'region_name'),
                   'status_title': data.get('status_title'),
-                  'type': analysisResponseDict(data,'page_info', 'type'),
+                  'type': analysisResponseDict(data, 'page_info', 'type'),
                   'page_url': analysisResponseDict(data, 'page_info', 'page_url'),
                   'page_title': analysisResponseDict(data, 'page_info', 'page_title'),
                   'title': analysisResponseDict(data, 'page_info', 'title'),
@@ -189,7 +198,7 @@ def getArticleVideo(data: dict):
     return None
 
 
-def analysisResponseDict(data: dict, option1: str, option2: str = None, type: str ="str"):
+def analysisResponseDict(data: dict, option1: str, option2: str = None, type: str = "str"):
     try:
         if type == "int" and option1 is not None and option2 is not None:
             return int(data.get(option1).get(option2))
@@ -210,4 +219,3 @@ def analysisResponseDict(data: dict, option1: str, option2: str = None, type: st
     except Exception as e:
         logutils.error(e)
     return None
-
