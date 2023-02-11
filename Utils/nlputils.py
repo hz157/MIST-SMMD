@@ -157,8 +157,8 @@ def SpacySimilarity(text1: str, text2: str):
 
 
 def relevant(text: str):
-    tokenizer = AutoTokenizer.from_pretrained("AI/dimbat_disaster_distilbert")
-    model = TFAutoModelForSequenceClassification.from_pretrained("AI/dimbat_disaster_distilbert")
+    tokenizer = AutoTokenizer.from_pretrained("Model/dimbat_disaster_distilbert")
+    model = TFAutoModelForSequenceClassification.from_pretrained("Model/dimbat_disaster_distilbert")
     classifier = pipeline("sentiment-analysis", model=model, tokenizer=tokenizer)
     result = classifier(text)
     print(result)
@@ -169,8 +169,8 @@ def relevant(text: str):
 
 
 def translate_zh_en(text: str):
-    tokenizer = AutoTokenizer.from_pretrained("AI/opus-mt-zh-en")
-    model = AutoModelForSeq2SeqLM.from_pretrained("AI/opus-mt-zh-en")
+    tokenizer = AutoTokenizer.from_pretrained("Model/opus-mt-zh-en")
+    model = AutoModelForSeq2SeqLM.from_pretrained("Model/opus-mt-zh-en")
     zh2en = pipeline("translation_zh_to_en", model=model, tokenizer=tokenizer)
     result = zh2en(text)
     print(result)
