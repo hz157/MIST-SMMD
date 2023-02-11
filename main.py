@@ -12,12 +12,29 @@
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 import datetime
 import os
+import uuid
 
+import app
 from Config import config
+from Database.Mysql import Mysql
+from Model.models import Task
 from Network.Sina import getArticlePagesByKeyword, getArticlePageInfo
 from Utils.logutils import LogUtils
 
 logger = LogUtils()
+
+
+
+def explain():
+    print("""
+        此为临时使用程序，所有运行日志将会在Console Window 中打印出来，其中可能会有部分ERROR不予可不予理会
+        首次运行请设置双端Cookie，数据库连接信息，服务器标识
+        该客户端仅爬取数据，不进行媒体下载，但内嵌翻译模型与相关度判别模型，启动可能较慢。
+        ！！！    建议关闭Proxy后在运行该程序，否则可能出现Cookie失效的情况    ！！！！
+        请勿更改文件内的所有文件，可能造成读取参数配置失败。
+    """)
+    anykey()
+    welcome()
 
 
 def welcome():
@@ -33,7 +50,7 @@ def welcome():
     *****************************************************************************  
     *       Tips:   Turning on the proxy may generate an inaccessible Weibo URL *
     *                               Project URL: https://github.com/hz157/MIDEP *
-    *                                                   Client Date: 2023-02-03 *
+    *                               Client Date: 2023-02-09    Version: Develop *
     *****************************************************************************                                
     """)
     print(f"Welcome MIDEP Client, Start Time: {str(datetime.datetime.now())}")
@@ -51,12 +68,18 @@ def anykey():
 
 
 def createTask():
+    session = Mysql()
     print("输入任务所需关键字")
     keyword = input()
     print("输入任务优先级 (0 > 1 > 2 > 3 > 4 > 5")
     priority = input()
     print("截止时间 (2023-01-01 00:00:00)")
     deadline = input()
+    task = Task(keyword=keyword, priority=priority, deadline=deadline, current=1,
+                current_time=str(datetime.datetime.now()))
+    session.add(task)
+    session.commit()
+    print("Success")
     anykey()
     displayMenu()
 
@@ -139,6 +162,8 @@ def testCookie(type: str = 'all'):
             print('     移动端 Cookie 有效')
         else:
             print('     移动端 Cookie 无效，请更新')
+            anykey()
+            setCookie()
     anykey()
     displayMenu()
 
@@ -162,8 +187,7 @@ def setParam():
     1.  更新/设置 Cookie
     2.  测试 Cookie
     3.  更新/设置 Database
-    4.  更新/设置 File Save Path
-    5.  格式化本地配置
+    4.  更新/设置 服务器标识
     q.  返回菜单
     """)
     listenKey = input()
@@ -181,7 +205,10 @@ def setParam():
             setDatabase()
         elif int(listenKey) == 4:
             os.system('cls')
-            setDatabase()
+            config.writeConfig('server', 'server_name', os.getlogin() + "_" + str(uuid.uuid1()))
+            print('Success')
+            anykey()
+            displayMenu()
     except Exception as e:
         logger.error(e)
 
@@ -189,10 +216,11 @@ def setParam():
 def menu():
     print("""
              Menu （请输入选项前的序号并回车）
-    1.  创建任务
-    2.  读取关键字数据
+    1.  创建任务（慎用）
+    2.  读取关键字数据（没写完）
     3.  参数设置
     4.  测试Cookie
+    5.  启动爬虫
     q.  退出
     """)
     listenKey = input()
@@ -211,15 +239,16 @@ def menu():
         elif int(listenKey) == 4:
             os.system('cls')
             testCookie()
+        elif int(listenKey) == 5:
+            os.system('cls')
+            app.run()
     except Exception as e:
         logger.error(e)
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    welcome()
-    while True:
-        menu()
+    explain()
     # print_hi('PyCharm')
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
