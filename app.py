@@ -9,6 +9,8 @@ import sys
 import datetime
 from enum import Enum
 
+from sqlalchemy import and_
+
 from Database.Mysql import Mysql
 from Model.models import Task, Article, User, Media, DictConvertORM
 from Network.Sina import *
@@ -31,6 +33,7 @@ def main(task):
     # task start work datetime
     if task.work_start is None:
         task.work_start = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        task.server = config.server_name
     while isOverflow:
         session = Mysql()
         if task.current_time < task.deadline:
@@ -39,7 +42,7 @@ def main(task):
             session.add(task)
             session.commit()
             session.close()
-            isOverflow = False
+            # isOverflow = False
             return None
         task.page_count = getArticlePagesByKeyword(task.keyword, task.current_time)  # get page count
         for i in range(task.current, task.page_count + 1):
@@ -108,8 +111,7 @@ def recovery(task: Task):
     task.current_time = (task.current_time + datetime.timedelta(days=-1)).strftime("%Y-%m-%d %H:%M:%S")
 
 
-
-if __name__ == '__main__':
+def run():
     logutils.info("Python Start")
     session = Mysql()
     # dblist = session.query(Article).filter(Article.spider_keyword == "山洪").all()
@@ -117,8 +119,14 @@ if __name__ == '__main__':
     while True:
         try:
             session = Mysql()
-            task = session.query(Task).filter(Task.status == 0).order_by(Task.priority).first()
+            task = session.query(Task).filter(and_(Task.status == 0, Task.server == config.server_name)).order_by(Task.priority).first()
+            if task is None:
+                task = session.query(Task).filter(and_(Task.status == 0, Task.server == None)).order_by(Task.priority).first()
             session.close()
             main(task)
         except Exception as e:
             logutils.error(e)
+
+
+if __name__ == '__main__':
+    run()
