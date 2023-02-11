@@ -85,7 +85,7 @@ def readConfig(section, option):
 # 开发环境
 env = prop
 
-server_name = 'develop'
+server_name = readConfig('server', 'server_name')
 
 """Mysql Config"""
 Mysql_dialect = "mysql"
