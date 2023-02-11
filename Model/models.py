@@ -96,6 +96,7 @@ class Task(Base):
     work_start = Column(DateTime, comment='开始时间')
     work_end = Column(DateTime, comment='结束时间')
     status = Column(Integer, comment='状态')
+    server = Column(String(255), comment='服务器标识')
 
 
 def DictConvertORM(data, table: str, obj: list = None):
