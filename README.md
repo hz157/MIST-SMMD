@@ -25,10 +25,20 @@
 | Transformers | opus-mt-zh-en    | 翻译(中译英)  | [Helsinki-NLP/opus-mt-zh-en](https://huggingface.co/Helsinki-NLP/opus-mt-zh-en)                                      |
 
 
-### Spacy
+### Spacy Models Install
 需要使用zh_core_web_md模型, 请使用下述命令进行安装
 ```shell
 python -m spacy download zh_core_web_md
+```
+
+### Transformers Models Git clone
+```shell
+git lfs install
+git clone 'transformers Model huggingface url'
+
+# if you want to clone without large files – just their pointers
+# prepend your git clone with the following env var:
+GIT_LFS_SKIP_SMUDGE=1
 ```
 
 ## 支持库列表
