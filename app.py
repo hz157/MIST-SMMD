@@ -65,6 +65,7 @@ def main(task):
                     ArticleInfo['server_name'] = config.server_name
                     ArticleInfo['clean_text'] = CleanData(ArticleInfo['text'])
                     ArticleInfo['relevant'] = relevant(translate_zh_en(ArticleInfo['clean_text']))
+                    # ArticleInfo['relevant'] = None
                 except Exception as e:
                     logutils.error(e)
                 Images = getArticleImage(response)
@@ -80,7 +81,7 @@ def main(task):
                             # Construct user ORM object 构造用户ORM对象
                             user = DictConvertORM(UserInfo, table='user')
                         else:
-                            user = DictConvertORM(UserInfo, table='update_user', obj1=[user])
+                            user = DictConvertORM(UserInfo, table='update_user', obj=[user])
                         session.add(user)
                         session.add(article)
                         # Judge whether there are pictures  判断是否有图片
