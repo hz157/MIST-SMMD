@@ -20,14 +20,16 @@ logutils = LogUtils()
 
 def DownloadWeiboImage(pid):
     try:
-        IMAGE_URL = f"{config.Sina_OrgImage_Url}{pid}.jpg"
-        r = requests.get(IMAGE_URL)
+        # IMAGE_URL = f"{config.Sina_OrgImage_Url}{pid}.jpg"
+        # r = requests.get(IMAGE_URL)
+        r = requests.get(pid,headers=config.Sina_Image_Header)
+        print(r.status_code)
         uuidCode = uuid.uuid1()
         path = f'{config.images_root_path}/{uuidCode}.jpg'
         with open(path, 'wb') as f:
             f.write(r.content)
         if os.path.exists(path):
-            return [os.path.getsize(path), uuidCode]
+            return [os.path.getsize(path), str(uuidCode) + '.jpg']
         else:
             return None
     except Exception as e:
@@ -35,13 +37,13 @@ def DownloadWeiboImage(pid):
     return None
 
 
-def DownloadWeiboVideo(mid, url):
+def DownloadWeiboVideo(url):
     try:
         uuidCode = uuid.uuid1()
         path = f'{config.video_root_path}/{uuidCode}.mp4'
         urllib.request.urlretrieve(url, path)
         if os.path.exists(path):
-            return [os.path.getsize(path), uuidCode]
+            return [os.path.getsize(path), str(uuidCode) + '.mp4']
         else:
             return None
     except Exception as e:
