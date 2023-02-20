@@ -17,15 +17,15 @@ logger = LogUtils()
 
 """Files Path Config"""
 # log root path
-Logger_root_path = "Z:/Project/MIDEP/logs"
+Logger_root_path = "D:/Project/MIDEP/logs"
 # ini path
 config_file_path = "Config/config.ini"
 # video root path
 # video_root_path = "static/video"
-video_root_path = "Z:/Project/MIDEP/video"
+video_root_path = "D:/Project/MIDEP/video"
 # image root path
 # images_root_path = "static/image"
-images_root_path = "Z:/Project/MIDEP/image"
+images_root_path = "D:/Project/MIDEP/image"
 
 
 def writeConfig(section: str, option: str, data: str):
@@ -129,4 +129,19 @@ Sina_Mobile_Header = {
     "accept-encoding": "gzip, deflate, br",
     "accept-language": "zh-CN,zh;q=0.9",
     "cookie": readConfig('cookie', 'mobile')
+}
+
+Sina_Image_Header = {
+        'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/110.0',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Connection': 'keep-alive',
+        'Upgrade-Insecure-Requests': '1',
+        'Sec-Fetch-Dest': 'document',
+        'Sec-Fetch-Mode': 'navigate',
+        'Sec-Fetch-Site': 'none',
+        'Sec-Fetch-User': '?1',
+        'X-Forwarded-For': '127.0.0.1',
+        'X-Forwarded-For': 'localhost'
 }
