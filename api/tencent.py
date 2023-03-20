@@ -61,10 +61,3 @@ def geocoder(query: str):
     result = {"name": response['result']['title'],
               'gcj-02': {'lng': response['result']['location']['lng'], 'lat': response['result']['location']['lat']}}
     return result
-
-#
-# a = geocoder('厦门市思明南路422号')
-# print(a)
-# wgs84 = gcj02_to_wgs84(a['gcj-02']['lng'], a['gcj-02']['lat'])
-# a['wgs-84'] = {'lng': wgs84[0],'lat': wgs84[1]}
-# print(a)
