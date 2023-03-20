@@ -58,3 +58,4 @@ def write_csv(path, fields, encoding: str = 'utf-8-sig'):
     except Exception as e:
         print(e)
         return False
+
