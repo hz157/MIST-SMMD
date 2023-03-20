@@ -14,7 +14,7 @@ from config import config
 from data.standardizing import time_standardization, spacy_standization
 from unit.coordinate import bd09_to_wgs84
 
-# spacy.require_gpu()  # 使用GPU请取消该行注释
+spacy.require_gpu()  # 使用GPU请取消该行注释
 NER = spacy.load("zh_core_web_trf",
                  exclude=["tagger", "parser", "entity_linker", "entity_ruler", "textcat", "textcat_multilabel",
                           "lemmatizer", "trainable_lemmatizer", "morphologizer", "attribute_ruler", "senter",
