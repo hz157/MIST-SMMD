@@ -73,10 +73,3 @@ def place_v2_search(query: str, region: str = "全国"):
     if result:
         return result[0]    # 默认返回第一个，相关地较高
     return None
-
-#
-# a = place_v2_search('厦门市湖里区嘉禾路468号SM城市广场F1')
-# print(a)
-# wgs84 = bd09_to_wgs84(a['bd-09']['lng'], a['bd-09']['lat'])
-# a['wgs-84'] = {'lng': wgs84[0], 'lat': wgs84[1]}
-# print(a)
