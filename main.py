@@ -1,6 +1,5 @@
 from datetime import datetime
 
-import spacy
 from config import config
 from data.csv import read_csv, write_csv
 from data.excel import read_excel, write_excel
