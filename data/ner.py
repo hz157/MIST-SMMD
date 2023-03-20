@@ -120,11 +120,6 @@ def create_write_data(native_data, label_info):
                 if wgs84:
                     result[11] = wgs84
                 result[12] = baidu['street_id']  # 街景地图id
-            # result[10] = 0
-            # result[11] = 0
-            # result[12] = 0
-            # result[13] = 0
-            # result[14] = 0
         else:
             return 'No nerTIME'
     if check == result:
