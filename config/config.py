@@ -24,9 +24,9 @@ TENCENT_API_SK = ''
 
 
 # LOCAL FILE PATH
-ORIGINAL_CSV_PATH = r'test/test_raw_data.csv'
-SAVE_CSV_PATH = r'test/dateset.csv'
+ORIGINAL_PATH = r'test/test_raw_data.csv'
+SAVE_PATH = r'dataset/dateset.csv'
 
 # KEYWORD
-TIME_REVERSE_KEYWORD = ['分', '秒', '近', '又', '日前', "几", "最近", "春", "夏", "秋", "冬"]  # 时间相关反向关键字
+TIME_KEYWORD = ["月","日","昨天","今天","前天"]  # 时间相关关键字
 FAC_REVERSE_KEYWORD = ['消防', '派出所']
