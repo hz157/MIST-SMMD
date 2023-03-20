@@ -71,9 +71,8 @@ def spacy_label_mark(sentence):
 
 
 def create_write_data(native_data, label_info):
-    result = [[]] * 15
-    check = [[]] * 15
-    sentence = ''
+    result = [[]] * 13
+    check = [[]] * 13
     if 'FAC' in label_info.keys():  # 判断是否有空间信息，无则弃之
         if 'TIME' in label_info.keys() or 'DATE' in label_info.keys():  # 判断是否有时间信息，无则弃之
             sentence = []
@@ -106,21 +105,26 @@ def create_write_data(native_data, label_info):
             ner_spacy, ner_spacy_status = spacy_standization(label_info, native_data)
             result[8] = ner_spacy
             result[9] = ner_spacy_status
-            # if ner_spacy is not None or ner_spacy != []:
-            #     baidu = place_v2_search(ner_spacy[0])  # 请求百度位置
-            #     if baidu is not None:
-            #         wgs84 = bd09_to_wgs84(baidu['bd-09']['lng'], baidu['bd-09']['lat'])
-            #         baidu['wgs-84'] = {'lng': wgs84[0], 'lat': wgs84[1]}
-            #         result[10] = baidu['bd-09']['lng']  # bd-09 坐标
-            #         result[11] = baidu['bd-09']['lat']  # bd-09 坐标
-            #         result[12] = baidu['wgs-84']['lng']  # wgs-84 坐标
-            #         result[13] = baidu['wgs-84']['lng']  # wgs-84 坐标
-            #         result[14] = baidu['street_id']  # 街景地图id
-            result[10] = 0
-            result[11] = 0
-            result[12] = 0
-            result[13] = 0
-            result[14] = 0
+            if ner_spacy is not None or ner_spacy != []:
+                baidu = place_v2_search(ner_spacy[0])  # 请求百度位置
+                bd09 = []
+                wgs84 = []
+                for item in ner_spacy:
+                    baidu_loc = place_v2_search(item)
+                    if baidu_loc is not None:
+                        bd09.append({'lng': baidu_loc['bd-09']['lng'], 'lat': baidu_loc['bd-09']['lat']})
+                        wgs84 = bd09_to_wgs84(baidu_loc['bd-09']['lng'], baidu_loc['bd-09']['lat'])
+                        wgs84.append({'lng': wgs84[0], 'lat': wgs84[1]})
+                if bd09:
+                    result[10] = bd09
+                if wgs84:
+                    result[11] = wgs84
+                result[12] = baidu['street_id']  # 街景地图id
+            # result[10] = 0
+            # result[11] = 0
+            # result[12] = 0
+            # result[13] = 0
+            # result[14] = 0
         else:
             return 'No nerTIME'
     if check == result:
