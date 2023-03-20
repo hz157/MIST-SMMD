@@ -14,6 +14,7 @@ from config import config
 from data.standardizing import time_standardization, spacy_standization
 from unit.coordinate import bd09_to_wgs84
 
+# spacy.require_gpu()  # 使用GPU请取消该行注释
 NER = spacy.load("zh_core_web_trf",
                  exclude=["tagger", "parser", "entity_linker", "entity_ruler", "textcat", "textcat_multilabel",
                           "lemmatizer", "trainable_lemmatizer", "morphologizer", "attribute_ruler", "senter",
@@ -50,7 +51,6 @@ def spacy_label_mark(sentence):
     Returns: 标签信息和数据 dict
 
     """
-    # spacy.require_gpu()   # 使用GPU请取消该行注释
     if sentence is None:
         return
     result = {}
@@ -70,14 +70,18 @@ def spacy_label_mark(sentence):
     return result
 
 
-def create_write_csv_data(native_data, label_info):
+def create_write_data(native_data, label_info):
     result = [[]] * 15
     check = [[]] * 15
     sentence = ''
     if 'FAC' in label_info.keys():  # 判断是否有空间信息，无则弃之
         if 'TIME' in label_info.keys() or 'DATE' in label_info.keys():  # 判断是否有时间信息，无则弃之
-            for item in native_data['sentence'][0]:
-                sentence += item
+            sentence = []
+            for item in native_data['sentence']:
+                tmp = ''
+                for i in item:
+                    tmp = tmp + i
+                sentence.append(tmp)
             result[0] = native_data['text']  # 原始文本
             result[1] = sentence  # jionlp 拆分的句子
             result[2] = native_data['create_at']  # 博文时间
@@ -90,7 +94,7 @@ def create_write_csv_data(native_data, label_info):
             if 'GPE' in label_info.keys():
                 result[4] = label_info['GPE']  # spacy 行政区
             else:
-                result[4] = ''  # spacy 行政区
+                result[4] = ''
             if label_info['FAC'] in config.FAC_REVERSE_KEYWORD:  # 设施反向关键字 修改config/config.py
                 result[5] = ''  # 反向关键字排除，添加空数据
             else:
