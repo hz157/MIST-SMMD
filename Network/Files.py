@@ -5,14 +5,14 @@
 # @FileName: Network/Files
 # @Author：Ryan Zhang    (https://github.com/hz157)
 # @DateTime: 11/1/2023 上午5:13
+import datetime
 import json
 import os
-import urllib
 import requests
+import urllib
+import uuid
 
 from Config import config
-from Model import Article
-from Utils.clean import CleanData
 from Utils.logutils import LogUtils
 
 logutils = LogUtils()
@@ -20,13 +20,16 @@ logutils = LogUtils()
 
 def DownloadWeiboImage(pid):
     try:
-        IMAGE_URL = f"{config.Sina_OrgImage_Url}{pid}.jpg"
-        r = requests.get(IMAGE_URL)
-        path = f'{config.images_root_path}/{pid}.jpg'
+        # IMAGE_URL = f"{config.Sina_OrgImage_Url}{pid}.jpg"
+        # r = requests.get(IMAGE_URL)
+        r = requests.get(pid,headers=config.Sina_Image_Header)
+        print(r.status_code)
+        uuidCode = uuid.uuid1()
+        path = f'{config.images_root_path}/{uuidCode}.jpg'
         with open(path, 'wb') as f:
             f.write(r.content)
         if os.path.exists(path):
-            return os.path.getsize(path)
+            return [os.path.getsize(path), str(uuidCode) + '.jpg']
         else:
             return None
     except Exception as e:
@@ -34,29 +37,15 @@ def DownloadWeiboImage(pid):
     return None
 
 
-def DownloadWeiboVideo(mid, url):
+def DownloadWeiboVideo(url):
     try:
-        path = f'{config.video_root_path}/{mid}.mp4'
+        uuidCode = uuid.uuid1()
+        path = f'{config.video_root_path}/{uuidCode}.mp4'
         urllib.request.urlretrieve(url, path)
         if os.path.exists(path):
-            return os.path.getsize(path)
+            return [os.path.getsize(path), str(uuidCode) + '.mp4']
         else:
             return None
     except Exception as e:
         logutils.error(e)
     return None
-
-
-def SaveJsonData(dbList: Article):
-    cleanList = []
-    for i in dbList:
-        if i is not None or i != "":
-            cleanList.append(CleanData(i.text))
-    Note = open('static/output/data.txt', 'a', encoding="utf-8")
-    line = 1
-    for i in cleanList:
-        dataDic = {"id": line, "text": i}
-        line = line + 1
-        jsonData = json.dumps(dataDic, ensure_ascii=False)
-        Note.write(f'{jsonData}\n')  # \n 换行符
-    Note.close  # 关闭文件

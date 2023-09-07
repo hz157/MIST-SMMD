@@ -10,7 +10,6 @@ import sys
 
 from loguru import logger
 
-from Config import config
 
 
 class LogUtils:
@@ -27,8 +26,9 @@ class LogUtils:
         # 解决重复打印
         logger.remove()
         logger.add(sys.stderr, level="INFO")
-
-        logFilepath = config.Logger_root_path
+        # logger.remove(handler_id=None)
+        # logFilepath = config.Logger_root_path
+        logFilepath = 'logs'
         # 判断目录是否存在,不存在则创建新的目录
         if not os.path.isdir(logFilepath):
             os.makedirs(logFilepath)

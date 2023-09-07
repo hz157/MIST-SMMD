@@ -13,7 +13,6 @@ import requests
 from bs4 import BeautifulSoup
 
 from Config import config
-from Utils import temp_config
 from Utils.convert import CNConvertInt, UTCConvertFormat
 from Utils.logutils import LogUtils
 
@@ -21,7 +20,7 @@ from Utils.logutils import LogUtils
 logutils = LogUtils()
 
 
-def getArticlePagesByKeyword(stopTime: datetime, keyword: None):
+def getArticlePagesByKeyword(keyword: str, stopTime: datetime = None):
     """
     Get Sina Weibo Article Page Count
     :param stopTime: Search Stop Time
@@ -29,13 +28,15 @@ def getArticlePagesByKeyword(stopTime: datetime, keyword: None):
     :return: page count-int
     """
     logutils.info(f"Start requesting article pages by keyword (keyword: {keyword})")
-    start = (stopTime + datetime.timedelta(days=-1)).strftime("%Y-%m-%d-%H")  # previous day
-    end = stopTime.strftime("%Y-%m-%d %H")
-    try:
+    if stopTime is None:
+        url = f"{config.Sina_PC_URL}{keyword}"
+    else:
+        start = (stopTime + datetime.timedelta(days=-1)).strftime("%Y-%m-%d-%H")  # previous day
+        end = stopTime.strftime("%Y-%m-%d %H")
         url = f"{config.Sina_PC_URL}{keyword}&typeall=1&suball=1&timescope=custom%3A{start}%3A{end}&Refer=g&nodup=1"
-        head = config.Sina_PC_Header
-        head['cookie'] = temp_config.readConfig("cookie", "pc")
-        data = requests.get(url=url, headers=head).text
+    try:
+        header = config.Sina_PC_Header
+        data = requests.get(url=url, headers=header).text
         # load bs4
         soup = BeautifulSoup(data, features="html.parser")
         # find div
@@ -64,7 +65,6 @@ def getArticleMidsByKeyword(stopTime: datetime, keyword: None, page: int):
     try:
         url = f"{config.Sina_PC_URL}{keyword}&typeall=1&suball=1&timescope=custom%3A{start}%3A{end}&Refer=g&nodup=1&page={str(page)}"
         header = config.Sina_PC_Header
-        header['cookie'] = temp_config.readConfig("cookie", "pc")
         data = requests.get(url=url, headers=header).text
         # load bs4
         soup = BeautifulSoup(data, features="html.parser")
@@ -88,7 +88,6 @@ def getArticlePageInfo(mid: str):
     try:
         url = f"{config.Sina_Mobile_URL}{mid}"
         header = config.Sina_Mobile_Header
-        header['cookie'] = temp_config.readConfig("cookie", "mobile")
         session = requests.Session()
         res = session.get(url=url, headers=header, timeout=10)
         soup = BeautifulSoup(res.text, 'html.parser')
